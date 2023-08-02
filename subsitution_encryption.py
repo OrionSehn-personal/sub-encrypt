@@ -148,14 +148,17 @@ def test_3():
 def test_4():
     print("test 4:")
 
-    message = "Hey"
+    message = "mayo moose"
     fib_sub_binary = {"0": "01", "1": "0"}
-    padding = "00000000"
+    padding = ""
+
 
 
     encrypted_message = encrypt(message, fib_sub_binary, 2, padding)
+    # print(f"encrypted message: {encrypted_message}")
     decrypted_message = decrypt(encrypted_message, fib_sub_binary, 2, padding)
-    print("test 3 complete\n")
+    # print(f"decrypted message: {decrypted_message}")
+    print("test 4 complete\n")
 
 if __name__ == "__main__": 
     # test_1()

@@ -21,7 +21,8 @@ class Substituion_Cipher(Scene):
         explain_text = "Encoding: Convert message to Binary"
         explain_text = Text(explain_text).scale(0.50).shift(UP*2)
         self.play(Write(explain_text))
-        # self.wait(2)
+
+        self.wait(2)
 
 
         # Convert message to binary
@@ -115,16 +116,15 @@ class Substituion_Cipher(Scene):
 
         # two_sub_md = MarkupText(two_sub)
 
-        crop_two_sub = two_sub[0:-20] + "..."
+        crop_two_sub = two_sub[0:-40] + "..."
         #underline all 01's in the two_sub text
         two_sub_underline_text = MarkupText(
-            crop_two_sub.replace("01", "<span underline='single' underline_color='white'>01</span>"),
+            crop_two_sub.replace("01", " <span underline='single' underline_color='white'>01</span> ")[1:],
             color=WHITE,
-            font_size=DEFAULT_FONT_SIZE
-
+            font_size=DEFAULT_FONT_SIZE,
         )
         two_sub_underline_text.scale(0.3)
-        two_sub_underline_text.shift(LEFT*1.25, DOWN*0.5)
+        two_sub_underline_text.shift(LEFT*1.50, DOWN*0.5)
 
         self.play(Write(two_sub_underline_text))
 
@@ -173,8 +173,55 @@ class Substituion_Cipher(Scene):
         self.wait(2)
 
 
-        self.play(FadeOut(explain_text), FadeOut(ascii_text), FadeOut(one_sub_reverse_text)) 
+        self.play(FadeOut(explain_text), FadeOut(ascii_text), FadeOut(one_sub_reverse_text))
         self.wait(1)
+
+        future_title = Title("Future Ideas")
+        self.play(Transform(title, future_title))
+        self.wait(1)
+
+        future_text1 = Text("Define substitution on each character, then use subsitution as private key").scale(0.5).shift(UP*2.5)
+        self.play(Write(future_text1))
+        self.wait(1)
+
+        future_matrix = Matrix([["a", "c"], ["b", "i"], ["c", "n"], ["d", "o"], ["...", "..."], ["z", "a"]]).scale(0.8)
+        # future_matrix.shift()
+        self.play(Write(future_matrix))
+        self.wait(1)
+
+        vary_text = Text("Vary the substitution matrix, to encode text").scale(0.5).shift(DOWN*2.5)
+        self.play(Write(vary_text))
+        self.wait(1)
+
+        future_matrix2 = Matrix([["a", "b"], ["b", "c"], ["c", "i"], ["d", "x"], ["...", "..."], ["z", "p"]]).scale(0.8)
+        self.play(Transform(future_matrix, future_matrix2))
+        self.wait(1)
+
+        future_matrix3 = Matrix([["a", "x"], ["b", "p"], ["c", "m"], ["d", "q"], ["...", "..."], ["z", "z"]]).scale(0.8)
+        self.play(Transform(future_matrix, future_matrix3))
+        self.wait(1)
+
+        self.play(FadeOut(vary_text))
+
+        future_matrix4 = Matrix([["a", "xi"], ["b", "pip"], ["c", "ain"], ["d", "q"], ["...", "..."], ["z", "zo"]]).scale(0.8)
+        qustion_text = Text("When can we define a reverse substitution in a unique way?").scale(0.5).shift(DOWN*2.5)
+        self.play(Transform(future_matrix, future_matrix4), Write(qustion_text))
+        self.wait(2)
+
+        question_text2 = Text("Can we use ciphers with longer subsitutions?").scale(0.5).shift(DOWN*3)
+        self.play(Write(question_text2))
+        self.wait(1)
+
+        future_matrix5 = Matrix([["a", "xiop"], ["b", "pas"], ["c", "blue"], ["d", "a"], ["...", "..."], ["z", "ingp"]]).scale(0.8)
+        self.play(Transform(future_matrix, future_matrix5))
+        self.wait(2)
+        
+        self.play(FadeOut(future_matrix), FadeOut(qustion_text), FadeOut(question_text2), FadeOut(title), FadeOut(future_text1))
+        self.wait(1)
+
+
+        
+
 
 
 
