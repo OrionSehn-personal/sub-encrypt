@@ -54,9 +54,11 @@ def reverse_substitution(substitution, subs_str, iterations):
 
 
 
-def encrypt(message, substitution, iterations = 5):
+def encrypt(message, substitution, iterations = 5, padding = ""):
     if DEBUG:
         print(f"message: {message}")
+    
+    message = padding + message
 
     #put string into binary
     binary_message = ""
@@ -66,6 +68,9 @@ def encrypt(message, substitution, iterations = 5):
     if DEBUG:
         print(f"binary message: {binary_message}")
 
+    if DEBUG:
+        print(f"substitution: {substitution}")
+
     #encrypt
     encrypted_message = Substitution(substitution, binary_message, iterations)
     if DEBUG:
@@ -74,9 +79,9 @@ def encrypt(message, substitution, iterations = 5):
     return encrypted_message
 
 
-def decrypt(message, substitution, iterations):
+def decrypt(message, substitution, iterations, padding = ""):
     #return string from binary
-
+        
     #decrypt
     decrypted_message = reverse_substitution("none", message, iterations)
     if DEBUG: 
@@ -87,6 +92,10 @@ def decrypt(message, substitution, iterations):
     if DEBUG:
         print(f"decrypted message: {decrypted_message}")
 
+    #remove padding
+    decrypted_message = decrypted_message[len(padding):]
+    if DEBUG:
+        print(f"decrypted message without padding: {decrypted_message}")
     return decrypted_message
 
 
@@ -136,7 +145,20 @@ def test_3():
     decrypted_message = decrypt(encrypted_message, fib_sub_binary, 2)
     print("test 3 complete\n")
 
+def test_4():
+    print("test 4:")
+
+    message = "Hey"
+    fib_sub_binary = {"0": "01", "1": "0"}
+    padding = "00000000"
+
+
+    encrypted_message = encrypt(message, fib_sub_binary, 2, padding)
+    decrypted_message = decrypt(encrypted_message, fib_sub_binary, 2, padding)
+    print("test 3 complete\n")
+
 if __name__ == "__main__": 
     # test_1()
     # test_2()
-    test_3()
+    # test_3()
+    test_4()
