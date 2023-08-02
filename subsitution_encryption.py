@@ -22,36 +22,33 @@ standardSubs = [["Fibonacci", {"a":"ab", "b":"a"}],
 DEBUG = True
 
 def reverse_substitution(substitution, subs_str, iterations):
-    # print(f"iteration: {iterations}")
-    # print(f"state: {subs_str}")
+
     if iterations == 0:
         return subs_str
     
     if len(subs_str) <= 1:
         return None
-    p = re.compile("ab")
+    p = re.compile("01")
     indexes = [m.start(0) for m in p.finditer(subs_str)]
 
     i = 0
     ab_s_replaced = 0
     reversed_subs_str = ""
     if len(indexes) == 0:
-        reversed_subs_str += "a"*len(subs_str)
+        reversed_subs_str += "0"*len(subs_str)
         return reverse_substitution(substitution, reversed_subs_str, iterations - 1)
 
     while(i < len(subs_str)):
         if ab_s_replaced == len(indexes):
-            reversed_subs_str += "b"*len(subs_str[i:])
+            reversed_subs_str += "1"*len(subs_str[i:])
             break
         if indexes[ab_s_replaced] == i:
-            reversed_subs_str += "a"
+            reversed_subs_str += "0"
             i += 2
             ab_s_replaced += 1
         else:
-            reversed_subs_str += "b"
+            reversed_subs_str += "1"
             i += 1
-
-
 
     return reverse_substitution(substitution, reversed_subs_str, iterations - 1)
 
@@ -66,16 +63,11 @@ def encrypt(message, substitution, iterations = 5):
     for char in message:
         binary_message += bin(ord(char))[2:].zfill(8)
 
-
     if DEBUG:
         print(f"binary message: {binary_message}")
-    #replace 0s and 1s with a and b
-    binary_message = binary_message.replace("0", "a")
-    binary_message = binary_message.replace("1", "b")
-    if DEBUG:
-        print(f"replaced 01 with ab: {binary_message}")
+
     #encrypt
-    encrypted_message = Substitution(standardSubs[0][1], binary_message, iterations)
+    encrypted_message = Substitution(substitution, binary_message, iterations)
     if DEBUG:
         print(f"encrypted message: {encrypted_message}")
 
@@ -89,12 +81,6 @@ def decrypt(message, substitution, iterations):
     decrypted_message = reverse_substitution("none", message, iterations)
     if DEBUG: 
         print(f"reversed subsitution {iterations} times: {decrypted_message}")
-
-    #replace a and b with 0s and 1s
-    decrypted_message = decrypted_message.replace("a", "0")
-    decrypted_message = decrypted_message.replace("b", "1")
-    if DEBUG:
-        print(f"replace ab's with 10's: {decrypted_message}")
 
     #return string from binary
     decrypted_message = "".join([chr(int(decrypted_message[i:i+8], 2)) for i in range(0, len(decrypted_message), 8)])
@@ -145,8 +131,9 @@ def test_3():
     print("test 3:")
 
     message = "hello"
-    encrypted_message = encrypt(message, standardSubs[0][1], 2)
-    decrypted_message = decrypt(encrypted_message, standardSubs[0][1], 2)
+    fib_sub_binary = {"0": "01", "1": "0"}
+    encrypted_message = encrypt(message, fib_sub_binary, 2)
+    decrypted_message = decrypt(encrypted_message, fib_sub_binary, 2)
     print("test 3 complete\n")
 
 if __name__ == "__main__": 
